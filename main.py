@@ -1,4 +1,5 @@
 # "Поколение Python": курс для профессионалов
+
 #Функция hide_card()
 def hide_card(card_number):
     return 12 * '*' + card_number.replace(' ', '')[-4:]
@@ -105,3 +106,50 @@ lang = set(input().split(', '))
 for i in range(n - 1): lang &= set(input().split(', '))
 if lang: print(*sorted(lang), sep=', ')
 else: print('Сериал снять не удастся')
+
+# Схожие слова 🌶️
+list_vow = ['а', 'у', 'о', 'ы', 'и', 'э', 'я', 'ю', 'ё', 'е']
+pattern = [i for i, c in enumerate(input()) if c in list_vow]
+for _ in range(int(input())):
+    word = input()
+    if [i for i, c in enumerate(word) if c in list_vow] == pattern: print(word)
+
+# Корпоративная почта 🌶️
+digits = '0123456789'
+names = []
+for _ in range(int(input())):
+    name, _ = input().split('@')
+    names.append(name)
+for _ in range(int(input())):
+    name =  input()
+    counter = 0
+    while name in names:
+        counter += 1
+        name = name.rstrip(digits) + str(counter)
+    names.append(name)
+    print(f'{name}@beegeek.bzz')
+
+# Файлы в файле 🌶️🌶️
+d = {}
+d_units = {'B': 1, 'KB': 1024, 'MB': 1024 ** 2, 'GB': 1024 ** 3}
+d_units_trans = {1: 'B', 2: 'KB', 3: 'MB', 4: 'GB'}
+def converter(x):
+    s = 1024
+    for i in range(1, 5):
+        if x > s: x /= s
+        else: break
+    return str(round(x)), d_units_trans[i]
+
+with open('files.txt', encoding='utf-8') as file:
+    for line in file:
+        name_full, size, unit = line.split()
+        name, f_ext = name_full.split('.')
+        d.setdefault(f_ext, []).append((name, int(size) * d_units[unit]))
+    for k in sorted(d):
+        total = 0
+        for i in sorted(d[k]):
+            print(i[0] + '.' + k)
+            total += i[1]
+        print('----------')
+        print('Summary:', *converter(total))
+        print()
