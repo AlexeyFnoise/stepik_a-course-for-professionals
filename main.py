@@ -17,7 +17,7 @@ def print_given(*args, **kwargs):
     for i in args: print(i, type(i))
     for key, name in sorted(kwargs.items()): print(key, name, type(name))
 
-Функция convert()
+# Функция convert()
 def convert(text):
     lcount = 0
     uccount = 0
