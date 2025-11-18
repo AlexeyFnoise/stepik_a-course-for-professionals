@@ -164,3 +164,15 @@ dates = [date(2010, 9, 28), date(2017, 1, 13),
          date(1666, 6, 6), date(1968, 5, 26)]
 for x in dates:
     print(f'{x.year}-Q{(x.month + 2) // 3}')
+
+# Функция get_date_range()
+from datetime import date
+def get_date_range(date1, date2):
+    if date1 > date2: return []
+    else: return [date.fromordinal(i) for i in range(date1.toordinal(), date2.toordinal() + 1)]
+
+# Функция saturdays_between_two_dates()
+from datetime import date
+def saturdays_between_two_dates(start, end):
+    if start < end: return len([date.fromordinal(i) for i in range(start.toordinal(), end.toordinal() + 1) if date.fromordinal(i).weekday() == 5])
+    else: return len([date.fromordinal(i) for i in range(end.toordinal(), start.toordinal() + 1) if date.fromordinal(i).weekday() == 5])
