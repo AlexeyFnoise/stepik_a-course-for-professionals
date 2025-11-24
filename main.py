@@ -176,3 +176,24 @@ from datetime import date
 def saturdays_between_two_dates(start, end):
     if start < end: return len([date.fromordinal(i) for i in range(start.toordinal(), end.toordinal() + 1) if date.fromordinal(i).weekday() == 5])
     else: return len([date.fromordinal(i) for i in range(end.toordinal(), start.toordinal() + 1) if date.fromordinal(i).weekday() == 5])
+
+# Две даты
+year1, moth1, day1 = input().split('-')
+year2, moth2, day2 = input().split('-')
+dat1 = date(int(year1), int(moth1), int(day1))
+dat2 = date(int(year2), int(moth2), int(day2))
+if dat1 < dat2: print(dat1.strftime('%d-%m (%Y)'))
+else: print(dat2.strftime('%d-%m (%Y)'))
+
+# Отсортированные даты
+dates = [date.fromisoformat(input()) for _ in range(int(input()))]
+for i in sorted(dates):
+    print(i.strftime('%d/%m/%Y'))
+
+# Функция print_good_dates()
+def print_good_dates(ls):
+    for i in sorted(filter(lambda i: i.year == 1992 and i.month + i.day == 29, ls)):
+        print(i.strftime('%B %d, %Y'))
+dates = [date(1992, 10, 19), date(1991, 12, 6),
+         date(1992, 9, 20)]
+print_good_dates(dates)
