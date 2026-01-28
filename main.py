@@ -197,3 +197,101 @@ def print_good_dates(ls):
 dates = [date(1992, 10, 19), date(1991, 12, 6),
          date(1992, 9, 20)]
 print_good_dates(dates)
+
+# Функция get_min_max()
+from datetime import date
+def get_min_max(ls = list):
+    if ls: return (min(ls), max(ls))
+    else: return ()
+dates = [date(2021, 10, 5), date(1992, 6, 10),
+         date(2012, 2, 23), date(1995, 10, 12)]
+print(get_min_max(dates))
+
+# Функция is_correct()
+def is_correct(day, month, year):
+    try:
+        my_date = date(int(year), int(month), int(day))
+        print(True)
+    except ValueError:
+        print(False)
+
+# Корректные даты
+def is_correct(day, month, year):
+    try:
+        my_date = date(year, month, day)
+        return True
+    except ValueError:
+        return False
+count = 0
+x_date = input()
+while x_date != 'end':
+    day, month, year = x_date.split('.')
+    if is_correct(int(day), int(month), int(year)):
+        count += 1
+        print('Корректная')
+    else: print('Некорректная')
+    x_date = input()
+print(count)
+
+
+data = [('07:14', '08:46'),
+        ('09:01', '09:37'),
+        ('10:00', '11:43'),
+        ('12:13', '13:49'),
+        ('15:00', '15:19'),
+        ('15:58', '17:24'),
+        ('17:57', '19:21'),
+        ('19:30', '19:59')]
+pattern = '%H:%M'
+result = 0
+for el in data:
+    result+= int((datetime.strptime(el[1], pattern) - datetime.strptime(el[0], pattern)).seconds / 60)
+print(result)
+
+# Пятница 13-е
+days = {
+    0: 0,  # понедельник
+    1: 0,  # вторник
+    2: 0,  # среда
+    3: 0,  # четверг
+    4: 0,  # пятница
+    5: 0,  # суббота
+    6: 0   # воскресенье
+}
+start = datetime(1, 1, 1)
+end = datetime(9999, 12, 31)
+current = start
+for i in range(1, (end - start).days):
+    day_of_week = current.weekday()
+    if current.day == 13:
+        days[day_of_week] +=1
+    current += timedelta(days=1)
+for el in days: print(days[el])
+
+time_work = {1: [9, 21],
+             2: [10, 18]}
+pattern_day_time = '%d.%m.%Y %H:%M'
+pattern_only_time = '%H:%M'
+dt = datetime.strptime(input(), pattern_day_time)
+if dt.weekday() in range(0, 4):
+    if dt.time() < time(hour=time_work[1][0]) or dt.time() > time(time_work[1][1]):
+        print('Магазин не работает')
+    else:
+        print(int(abs(timedelta(hours=dt.hour, minutes=dt.minute) - timedelta(hours=time_work[0][1])).seconds / 60))
+if dt.weekday() in [5, 6]:
+    if dt.time() < time(hour=time_work[2][0]) or dt.time() > time(time_work[2][1]):
+        prnt('Магазин не работает')
+    else:
+        print(int(abs(timedelta(hours=dt.hour, minutes=dt.minute) - timedelta(hours=time_work[2][1])).seconds / 60)
+
+staff_dates = {}
+res = 0
+for i in range(int(input())):
+    name, first_name, dt = input().split()
+    staff_dates.setdefault(datetime.strptime(dt, '%d.%m.%Y'), (name, first_name))
+    res += 1
+if len(staff_dates) == res:
+    mx = min(staff_dates.keys())
+    print(f'{mx.date().strftime('%d.%m.%Y')} {staff_dates[mx][0]} {staff_dates[mx][1]}')
+else:
+    print(min(staff_dates.keys()).date().strftime('%d.%m.%Y'), res - len(staff_dates) + 1)
