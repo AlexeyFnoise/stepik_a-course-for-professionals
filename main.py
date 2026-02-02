@@ -295,3 +295,31 @@ if len(staff_dates) == res:
     print(f'{mx.date().strftime('%d.%m.%Y')} {staff_dates[mx][0]} {staff_dates[mx][1]}')
 else:
     print(min(staff_dates.keys()).date().strftime('%d.%m.%Y'), res - len(staff_dates) + 1)
+
+def choose_plural(amout, word):
+    if amout % 10 == 1 and amout % 100 != 11: return word[0]
+    elif 2 <= amout % 10 <= 4 and not 12 <= amout % 100 <= 14: return word[1]
+    else: return word[2]
+plural_dict = {'day': ("день", "дня", "дней"),
+               'hour': ("час", "часа", "часов"),
+               'minute': ("минута", "минуты", "минут")}
+date_const = datetime(day=8, month=11, year=2022, hour=12)
+date_reliese = datetime.strptime(input(), '%d.%m.%Y %H:%M')
+result ='До выхода курса осталось: '
+print(date_const - date_reliese)
+current_dat = date_const - date_reliese
+if date_reliese < date_const:
+    if current_dat.days != 0 and (current_dat.seconds // 60) % 60 != 0:
+        print(f'{result}{current_dat.days} {choose_plural(current_dat.days, plural_dict['day'])} и '
+              f'{current_dat.seconds // 3600} {choose_plural(current_dat.seconds // 3600, plural_dict['hour'])} ')
+    elif current_dat.days != 0 and (current_dat.seconds // 60) % 60 == 0:
+        print(f'{result}{current_dat.days} {choose_plural(current_dat.days, plural_dict['day'])}')
+    elif current_dat.days == 0:
+        if (current_dat.seconds // 60) % 60 != 0 and current_dat.seconds // 3600 != 0:
+            print(f'{result}{current_dat.seconds // 3600} {choose_plural(current_dat.seconds // 3600, plural_dict['hour'])} и '
+                  f'{(current_dat.seconds // 60) % 60} {choose_plural((current_dat.seconds // 60) % 60, plural_dict['minute'])}')
+        elif current_dat.seconds // 3600 == 0:
+            print(f'{result}{(current_dat.seconds // 60) % 60} {choose_plural((current_dat.seconds // 60) % 60, plural_dict['minute'])}')
+        elif (current_dat.seconds // 60) % 60 == 0:
+            print(f'{result}{current_dat.seconds // 3600} {choose_plural(current_dat.seconds // 3600, plural_dict['hour'])} ')
+else: print('Курс уже вышел!')
