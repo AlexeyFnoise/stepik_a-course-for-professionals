@@ -323,3 +323,14 @@ if date_reliese < date_const:
         elif (current_dat.seconds // 60) % 60 == 0:
             print(f'{result}{current_dat.seconds // 3600} {choose_plural(current_dat.seconds // 3600, plural_dict['hour'])} ')
 else: print('Курс уже вышел!')
+
+import calendar, datetime
+year = int(input())
+for month in range(1, 13):
+    cnt = 0
+    for week in calendar.monthcalendar(year, month):
+        thursday = week[3]
+        if thursday:
+            cnt += 1
+            if cnt == 3:
+                print(datetime.date(year=year, month=month, day=thursday).strftime('%d.%m.%Y'))
