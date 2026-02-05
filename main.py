@@ -334,3 +334,23 @@ for month in range(1, 13):
             cnt += 1
             if cnt == 3:
                 print(datetime.date(year=year, month=month, day=thursday).strftime('%d.%m.%Y'))
+
+# 4.2
+import csv
+with open('salary_data.csv', 'r', encoding='utf-8') as csv_file:
+    company = csv.DictReader(csv_file, delimiter=';')
+    ls = {}
+    for line in company:
+        #print(line['company_name'], line['salary'])
+        ls.setdefault(line['company_name'], []).append(int(line['salary']))
+    result = {key: sum(value) // len(value) for key, value in ls.items()}
+    for key in sorted(result.items(), key=lambda x: (x[1], x[0])):
+        print(key[0])
+
+with open('wifi.csv', 'r', encoding='utf-8') as csv_file:
+    wifi = list(csv.reader(csv_file, delimiter=';'))[1:]
+    res_dict = {}
+    for line in wifi:
+        res_dict[line[1]] = res_dict.get(line[1], 0) + int(line[3])
+    for key, value in sorted(res_dict.items(), key=lambda x: (-x[1],x[0])):
+        print(f'{key}: {value}')
