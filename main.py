@@ -354,3 +354,44 @@ with open('wifi.csv', 'r', encoding='utf-8') as csv_file:
         res_dict[line[1]] = res_dict.get(line[1], 0) + int(line[3])
     for key, value in sorted(res_dict.items(), key=lambda x: (-x[1],x[0])):
         print(f'{key}: {value}')
+
+# 4.2 Проще, чем кажется 🌶️
+def condense_csv(file_name, id_name):
+    with open(file_name, 'r', encoding='utf-8') as csv_file:
+        data = csv.reader(csv_file)
+        res_dict = {}
+        set_new = []
+        for line in data:
+            res_dict.setdefault(line[0], {}).setdefault(line[1], line[2])
+            if line[1] not in set_new: set_new.append(line[1])
+    with open('condensed.csv', 'w', encoding='utf-8') as file:
+        wr = csv.writer(file)
+        wr.writerow([id_name, *set_new])
+        for line in res_dict.items():
+            s = [line[1][i] for i in set_new]
+            wr.writerow([line[0], *s])
+
+text = '''01,Title,Ran So Hard the Sun Went Down
+02,Title,Honky Tonk Heroes (Like Me)'''
+with open('data.csv', 'w', encoding='utf-8') as file:
+    file.write(text)
+
+condense_csv('data.csv', id_name='Position')
+
+with open('condensed.csv', encoding='utf-8') as file:
+    print(file.read().strip())
+
+# Возрастание классов 🌶️
+with open('student_counts.csv', 'r', encoding='utf-8') as file:
+    date = csv.DictReader(file)
+    dict_new = list(date)
+    count = sorted(date.fieldnames[1:], key=lambda x:  (int(x.split('-')[0]), x.split('-')[1]))
+    count.insert(0, date.fieldnames[0])
+    file.close()
+with open('sorted_student_counts.csv', 'w', encoding='utf-8') as new_file:
+    nf = csv.DictWriter(new_file, fieldnames=count)
+    nf.writeheader()
+    for line in dict_new:
+       nf.writerow(line)
+    new_file.close()
+
