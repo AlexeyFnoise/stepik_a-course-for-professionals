@@ -395,3 +395,16 @@ with open('sorted_student_counts.csv', 'w', encoding='utf-8') as new_file:
        nf.writerow(line)
     new_file.close()
 
+# Голодный студент 🌶️
+with open('prices.csv', 'r', encoding='utf-8') as file1:
+    obj = list(csv.reader(file1))
+    columns = obj[0]
+    obj.pop(0)
+    new_columns = columns[0].split(';')
+    d={}
+    for row in obj:
+        minimum = min(list(map(int,row[0].split(';')[1::])))
+        index_of_minimum = row[0].split(';').index(str(minimum))
+        d[row[0].split(';')[0]] = (new_columns[index_of_minimum],minimum)
+    result = min(d, key=lambda x: (d[x][1], d[x][0]))
+    print(f"{d[result][0]}: {result}")
