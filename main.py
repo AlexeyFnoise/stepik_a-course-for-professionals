@@ -408,3 +408,48 @@ with open('prices.csv', 'r', encoding='utf-8') as file1:
         d[row[0].split(';')[0]] = (new_columns[index_of_minimum],minimum)
     result = min(d, key=lambda x: (d[x][1], d[x][0]))
     print(f"{d[result][0]}: {result}")
+
+
+# 4.3 работа с json-файлами
+import json
+
+data = {'name': 'Russia', 'phone_code': 7, 'capital': 'Moscow', 'currency': 'RUB'}
+json_data = json.dumps(data)            # сериализуем словарь data в json-строку
+print(type(json_data))
+print(json_data)
+
+#4.4 Работа с json-файлами. Часть 2
+countries = {'Monaco': 'Monaco', 'Iceland': 'Reykjavik', 'Kenya': 'Nairobi', 'Kazakhstan': 'Nur-Sultan',
+             'Mali': 'Bamako', 'Colombia': 'Bogota', 'Finland': 'Helsinki', 'Costa Rica': 'San Jose',
+             'Cuba': 'Havana', 'France': 'Paris', 'Gabon': 'Libreville', 'Liberia': 'Monrovia',
+             'Angola': 'Luanda', 'India': 'New Delhi', 'Canada': 'Ottawa', 'Australia': 'Canberra'}
+data = json.dumps(countries, indent='   ', separators=(',', ' - '), sort_keys=True)
+print(data)
+
+words = {
+         frozenset(["tap", "telephone"]): ("tæp", "telifəun"),
+         "travel": "trævl",
+         ("hello", "world"): ("həˈləʊ", "wɜːld"),
+         "moonlight": "muːn.laɪt",
+         "sunshine": "ˈsʌn.ʃaɪn",
+         ("why", "is", "so", "difficult"): ("waɪ", "ɪz", "səʊ", "ˈdɪfɪkəlt"),
+         "adventure": "ədˈventʃər",
+         "beautiful": "ˈbjuːtɪfl",
+         frozenset(["spoon", "block"]): ("spu:n", "blɔk"),
+         "bicycle": "baisikl",
+         ("pilot", "fly"): ("pailət", "flai")
+        }
+
+data_json = json.dumps(words, skipkeys=True)
+print(data_json)
+
+with open('food_services.json', 'r', encoding='UTF-8') as file1:
+    data = json.load(file1)
+    d_dist = {}
+    for row in data:
+        d_dist.setdefault(row['TypeObject'], [0, ''])
+        if d_dist[row['TypeObject']][0] < row['SeatsCount']:
+            d_dist[row['TypeObject']][0] = row['SeatsCount']
+            d_dist[row['TypeObject']][1] = row['Name']
+    for el in sorted(d_dist.items()):
+        print(f'{el[0]}: {el[1][1]}, {el[1][0]}')
